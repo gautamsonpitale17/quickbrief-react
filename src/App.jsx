@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { 
   Sun, 
   Moon, 
@@ -7,7 +7,8 @@ import {
   Copy, 
   Download, 
   Loader2,
-  Check
+  Check,
+  Zap
 } from 'lucide-react';
 
 const STOP_WORDS = ["a","about","above","after","again","against","all","am","an","and","any","are","as","at","be","because","been","before","being","below","between","both","but","by","can","did","do","does","doing","down","during","each","few","for","from","further","had","has","have","having","he","her","here","hers","him","his","how","i","if","in","into","is","it","its","me","more","most","my","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","out","over","own","same","she","should","so","some","such","than","that","the","their","theirs","them","then","there","these","they","this","those","through","to","too","under","until","up","very","was","we","were","what","when","where","which","while","who","whom","why","with","you","your","yours"];
@@ -19,6 +20,15 @@ const QuickBrief = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+    link.type = 'image/svg+xml';
+    link.rel = 'shortcut icon';
+    link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>`;
+    document.getElementsByTagName('head')[0].appendChild(link);
+    document.title = "QuickBrief | AI Distiller";
+  }, []);
 
   const colors = {
     bg: isDarkMode ? 'bg-[#000000]' : 'bg-[#f8fafc]',
@@ -75,7 +85,7 @@ const QuickBrief = () => {
       <div className={`max-w-4xl mx-auto w-full flex flex-col h-full rounded-[2rem] border ${colors.border} ${colors.card} shadow-2xl overflow-hidden`}>
         
         <header className={`flex items-center justify-between p-6 border-b ${colors.border}`}>
-          <div>
+          <div className="flex items-center gap-2">
             <h1 className="text-2xl font-[1000] tracking-tighter uppercase leading-none">Quick<span className="text-blue-600">Brief</span></h1>
           </div>
           <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2.5 rounded-xl border ${colors.border} ${colors.buttonSecondary} transition-all`}>
