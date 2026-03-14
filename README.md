@@ -11,11 +11,7 @@ Features:
 - Loading animation during processing
 - Responsive and modern UI
 
-Installation:
-git clone https://github.com/gautamsonpitale17/quickbrief-react
-cd quickbrief-react
-npm install
-npm start
+Installation: git clone https://github.com/gautamsonpitale17/quickbrief-react
 
 Usage:
 - Paste text into the input box
