@@ -1,15 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { 
-  Sun, 
-  Moon, 
-  RotateCcw, 
-  ChevronRight, 
-  Copy, 
-  Download, 
-  Loader2,
-  Check,
-  Zap
-} from 'lucide-react';
 
 const STOP_WORDS = ["a","about","above","after","again","against","all","am","an","and","any","are","as","at","be","because","been","before","being","below","between","both","but","by","can","did","do","does","doing","down","during","each","few","for","from","further","had","has","have","having","he","her","here","hers","him","his","how","i","if","in","into","is","it","its","me","more","most","my","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","out","over","own","same","she","should","so","some","such","than","that","the","their","theirs","them","then","there","these","they","this","those","through","to","too","under","until","up","very","was","we","were","what","when","where","which","while","who","whom","why","with","you","your","yours"];
 
@@ -22,24 +11,16 @@ const QuickBrief = () => {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
-    const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-    link.type = 'image/svg+xml';
-    link.rel = 'shortcut icon';
-    link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>`;
-    document.getElementsByTagName('head')[0].appendChild(link);
     document.title = "QuickBrief | AI Distiller";
   }, []);
 
-  const colors = {
-    bg: isDarkMode ? 'bg-[#000000]' : 'bg-[#f8fafc]',
-    card: isDarkMode ? 'bg-[#080808]' : 'bg-[#ffffff]',
-    text: isDarkMode ? 'text-white' : 'text-[#111111]',
-    subText: isDarkMode ? 'text-gray-400' : 'text-gray-500',
-    border: isDarkMode ? 'border-white/10' : 'border-slate-200',
-    input: isDarkMode ? 'bg-white/5' : 'bg-slate-100',
-    buttonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white',
-    buttonSecondary: isDarkMode ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-slate-200 hover:bg-slate-300 text-black',
-    scaleBg: isDarkMode ? 'bg-white/5' : 'bg-slate-100',
+  const theme = {
+    bg: isDarkMode ? 'bg-black text-white' : 'bg-slate-50 text-slate-900',
+    card: isDarkMode ? 'bg-zinc-950 border-zinc-900' : 'bg-white border-slate-200',
+    input: isDarkMode ? 'bg-zinc-900 border-zinc-800 focus:ring-blue-500/20' : 'bg-slate-100 border-slate-200 focus:ring-blue-600/10',
+    subText: isDarkMode ? 'text-zinc-500' : 'text-slate-400',
+    btnSec: isDarkMode ? 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300' : 'bg-slate-200 hover:bg-slate-300 text-slate-700',
+    accent: 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20'
   };
 
   const handleSummarize = useCallback(() => {
@@ -81,42 +62,41 @@ const QuickBrief = () => {
   };
 
   return (
-    <div className={`h-screen w-full flex flex-col font-mono p-4 md:p-6 transition-colors duration-300 overflow-hidden ${colors.bg} ${colors.text}`}>
-      <div className={`max-w-4xl mx-auto w-full flex flex-col h-full rounded-[2rem] border ${colors.border} ${colors.card} shadow-2xl overflow-hidden`}>
+    <div className={`h-screen w-full flex flex-col font-mono p-4 md:p-8 transition-colors duration-500 overflow-hidden ${theme.bg}`}>
+      <div className={`max-w-4xl mx-auto w-full flex flex-col h-full rounded-[3rem] border shadow-2xl overflow-hidden ${theme.card}`}>
         
-        <header className={`flex items-center justify-between p-6 border-b ${colors.border}`}>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-[1000] tracking-tighter uppercase leading-none">Quick<span className="text-blue-600">Brief</span></h1>
-          </div>
-          <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2.5 rounded-xl border ${colors.border} ${colors.buttonSecondary} transition-all`}>
-            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+        <header className={`flex items-center justify-between p-8 border-b ${isDarkMode ? 'border-zinc-900' : 'border-slate-100'}`}>
+          <h1 className="text-2xl font-black tracking-tighter uppercase leading-none italic">Quick<span className="text-blue-600">Brief</span></h1>
+          <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-3 rounded-2xl border transition-all ${theme.btnSec} ${isDarkMode ? 'border-zinc-800' : 'border-slate-300'}`}>
+            {isDarkMode ? 
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> 
+              : 
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            }
           </button>
         </header>
 
-        <main className="flex-1 p-6 space-y-4 overflow-hidden flex flex-col">
-          
-          <div className="flex flex-col flex-1 min-h-0 space-y-2">
-            <span className={`text-[12px] font-black uppercase tracking-[0.2em] ${colors.subText} ml-1`}>Input Content</span>
+        <main className="flex-1 p-8 space-y-6 overflow-hidden flex flex-col">
+          <div className="flex flex-col flex-1 min-h-0 space-y-3">
+            <span className={`text-[10px] font-black uppercase tracking-[0.3em] ml-2 ${theme.subText}`}>Input Feed</span>
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="PASTE TEXT HERE..."
-              className={`flex-1 w-full p-5 rounded-2xl border ${colors.border} ${colors.input} outline-none focus:ring-2 focus:ring-blue-600/20 transition-all resize-none text-[15px] font-bold tracking-wide uppercase leading-relaxed overflow-y-auto`}
+              placeholder="PASTE SOURCE CONTENT..."
+              className={`flex-1 w-full p-8 rounded-[2rem] border outline-none focus:ring-4 transition-all resize-none text-[14px] font-bold tracking-tight uppercase leading-relaxed overflow-y-auto ${theme.input}`}
             />
           </div>
 
-          <div className={`flex flex-col md:flex-row gap-4 items-center justify-between ${colors.scaleBg} p-4 rounded-2xl border ${colors.border}`}>
-            <div className="flex items-center gap-4">
-              <span className={`text-[12px] font-black uppercase tracking-[0.2em] ${colors.subText}`}>Briefing Scale:</span>
-              <div className="flex p-1 rounded-lg bg-black/5 dark:bg-white/5">
+          <div className={`flex flex-col md:flex-row gap-6 items-center justify-between p-5 rounded-[2rem] border ${isDarkMode ? 'bg-zinc-900/50 border-zinc-900' : 'bg-slate-100 border-slate-200'}`}>
+            <div className="flex items-center gap-5">
+              <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${theme.subText}`}>Brief Scale</span>
+              <div className="flex p-1 rounded-2xl bg-black/10 dark:bg-white/5">
                 {[0.1, 0.25, 0.5].map((val) => (
                   <button
                     key={val}
                     onClick={() => setLength(val)}
-                    className={`px-3 py-1.5 rounded-md text-[10px] font-black uppercase transition-all ${
-                      length === val 
-                        ? 'bg-blue-600 text-white shadow-sm' 
-                        : `${colors.subText} hover:text-blue-500`
+                    className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all ${
+                      length === val ? theme.accent : `${theme.subText} hover:text-blue-500`
                     }`}
                   >
                     {val * 100}%
@@ -124,42 +104,52 @@ const QuickBrief = () => {
                 ))}
               </div>
             </div>
-            <div className="flex gap-2">
-              <button onClick={() => {setInputText(''); setSummary('');}} className={`px-6 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${colors.buttonSecondary} flex items-center gap-2`}>
-                <RotateCcw size={14} /> Reset
+            <div className="flex gap-3 w-full md:w-auto">
+              <button onClick={() => {setInputText(''); setSummary('');}} className={`flex-1 md:flex-none px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${theme.btnSec}`}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Reset
               </button>
-              <button onClick={handleSummarize} disabled={isLoading || !inputText} className={`px-8 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-30 ${colors.buttonPrimary} flex items-center gap-2`}>
-                {isLoading ? <Loader2 size={14} className="animate-spin" /> : <ChevronRight size={14} />} Brief
+              <button onClick={handleSummarize} disabled={isLoading || !inputText} className={`flex-1 md:flex-none px-10 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all disabled:opacity-20 flex items-center justify-center gap-2 ${theme.accent}`}>
+                {isLoading ? 
+                  <svg className="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> 
+                  : 
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m9 18 6-6-6-6"/></svg>
+                }
+                Brief
               </button>
             </div>
           </div>
 
           <div className="flex flex-col flex-1 min-h-0 relative">
             {isLoading ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4">
-                <Loader2 size={28} className="animate-spin text-blue-600" />
-                <span className="text-[11px] font-black uppercase tracking-[0.5em] opacity-50">Distilling...</span>
+              <div className="flex-1 flex flex-col items-center justify-center gap-5">
+                <svg className="animate-spin text-blue-600" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                <span className="text-[10px] font-black uppercase tracking-[0.8em] animate-pulse opacity-40">Distilling Content</span>
               </div>
             ) : summary ? (
-              <div className={`flex-1 flex flex-col min-h-0 p-6 rounded-3xl border ${colors.border} ${isDarkMode ? 'bg-white/[0.02]' : 'bg-black/[0.01]'} transition-all`}>
-                <div className="flex items-center justify-between mb-3 shrink-0">
-                  <h2 className="text-[12px] font-black uppercase tracking-[0.4em] text-blue-600">The Brief</h2>
+              <div className={`flex-1 flex flex-col min-h-0 p-10 rounded-[2.5rem] border transition-all ${isDarkMode ? 'bg-zinc-900/20 border-zinc-800' : 'bg-blue-50/30 border-blue-100'}`}>
+                <div className="flex items-center justify-between mb-6 shrink-0">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">The Summary</h2>
                   <div className="flex gap-2">
-                    <button onClick={handleCopy} className={`p-2 rounded-lg ${colors.buttonSecondary}`}>
-                      {isCopied ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
+                    <button onClick={handleCopy} className={`p-2.5 rounded-xl transition-colors ${theme.btnSec}`}>
+                      {isCopied ? 
+                        <svg className="text-emerald-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5"/></svg> 
+                        : 
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                      }
                     </button>
-                    <button onClick={handleDownload} className={`p-2 rounded-lg ${colors.buttonSecondary}`}>
-                      <Download size={16} />
+                    <button onClick={handleDownload} className={`p-2.5 rounded-xl transition-colors ${theme.btnSec}`}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                     </button>
                   </div>
                 </div>
-                <p className="flex-1 text-[16px] leading-7 font-medium tracking-wide opacity-90 italic overflow-y-auto pr-3">
+                <p className="flex-1 text-[16px] leading-relaxed font-semibold tracking-tight italic overflow-y-auto pr-6 scrollbar-none">
                   {summary}
                 </p>
               </div>
             ) : (
-              <div className={`flex-1 flex items-center justify-center border-2 border-dashed ${colors.border} rounded-3xl opacity-20`}>
-                <span className="text-[11px] font-black uppercase tracking-[0.5em]">Waiting for Context</span>
+              <div className={`flex-1 flex items-center justify-center border-4 border-dashed rounded-[2.5rem] opacity-10 transition-opacity ${isDarkMode ? 'border-zinc-800' : 'border-slate-300'}`}>
+                <span className="text-[10px] font-black uppercase tracking-[1em] -mr-[1em]">Empty</span>
               </div>
             )}
           </div>
